@@ -1,4 +1,6 @@
-const Card = (article) => {
+import axios from "axios"
+
+const Card = (articles) => {
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -17,7 +19,49 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+
+  const cardsWrapper = document.createElement('div')
+  cardsWrapper.classList.add('card')
+
+  const articlesData = Object.values(articles).flat().map(art => art);
+
+  for (let i = 0; i < articlesData.length; i++) {
+    let articleItem = articlesData[i];
+    console.log("articleItem", articleItem);
+
+    const headlinDiv = document.createElement('div')
+    const authorDiv = document.createElement('div')
+    const imgContainer = document.createElement('div')
+    const authorImg = document.createElement('img')
+    const authorsNameSpan = document.createElement('span')
+
+    headlinDiv.classList.add('headline')
+    authorDiv.classList.add('author')
+    imgContainer.classList.add('img-cointainer')
+    cardsWrapper.classList.add('card')
+
+    headlinDiv.textContent = articleItem.headline;
+    imgContainer.alt = "Author Photo";
+    authorImg.src = articleItem.authorPhoto;
+    authorsNameSpan.textContent = articleItem.authorName;
+
+
+    cardsWrapper.append(headlinDiv, authorDiv, imgContainer, authorImg, authorsNameSpan)
+
+    authorImg.width ='50';
+    authorImg.style.borderRight = '1px solid gray'
+
+    
+    
+
+
+  }
+
+  cardsWrapper.addEventListener('click', () => { console.log(cardsWrapper) })
+  return cardsWrapper;
 }
+
+
 
 const cardAppender = (selector) => {
   // TASK 6
@@ -28,6 +72,14 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+
+  axios.get(`http://localhost:5000/api/articles`)
+    .then(response => {
+      const cards = Card(response.data.articles);
+      document.querySelector(selector).appendChild(cards);
+    }).catch(error => {
+      console.log(error)
+    });
 }
 
 export { Card, cardAppender }

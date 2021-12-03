@@ -1,3 +1,5 @@
+import axios from "axios"
+
 const Header = (title, date, temp) => {
   // TASK 1
   // ---------------------
@@ -11,9 +13,31 @@ const Header = (title, date, temp) => {
   //    <span class="temp">{ temp }</span>
   //  </div>
   //
+
+
+  const headerWrapper = document.createElement('div')
+  const dateSpan = document.createElement('span')
+  const hTag = document.createElement('h1')
+  const tempSpan = document.createElement('span')
+
+  headerWrapper.classList.add('header')
+  dateSpan.classList.add('date')
+  tempSpan.classList.add('temp')
+
+  dateSpan.textContent = date;
+  hTag.textContent = title;
+  tempSpan.textContent = temp;
+
+  headerWrapper.appendChild(dateSpan)
+  headerWrapper.appendChild(hTag)
+  headerWrapper.appendChild(tempSpan)
+
+  return headerWrapper
 }
 
 const headerAppender = (selector) => {
+  const headerWrapper = Header("Lambda Times", new Date(), "26°");
+  document.querySelector(selector).appendChild(headerWrapper);
   // TASK 2
   // ---------------------
   // Implement this function taking a css selector as its only argument.
